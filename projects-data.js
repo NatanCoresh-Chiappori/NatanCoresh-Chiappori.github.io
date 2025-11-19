@@ -23,11 +23,11 @@ const allProjects = [
         image: null
     },
     {
-        title: "The Current State of Stem Cell Therapies for Neurological Disorders: A Meta-Analysis of Cell Types, Risks, and Translational Outcomes",
-        description: "My meta-analysis paper reviews the major stem cell types used in neurological therapies and compares their biological properties. It evaluates their therapeutic potential alongside known risks and translational limitations.",
+        title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
+        description: "Implemented a computer-mediated Cyberball model to examine how interactive game dynamics influence users’behavioral, affective, and physiological responses",
         link: "#",
         linkText: "Link",
-        tags: ["Mobile", "Design"],
+        tags: ["Human Study Design", "Project Management"],
         image: null
     },
     {
@@ -38,15 +38,14 @@ const allProjects = [
         tags: ["Machine Learning", "Neuroscience", "Python", "Research"],
         image: null
     },
-        {
-        title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
-        description: "Implemented a computer-mediated Cyberball model to examine how interactive game dynamics influence users’behavioral, affective, and physiological responses",
+    {
+        title: "The Current State of Stem Cell Therapies for Neurological Disorders: A Meta-Analysis of Cell Types, Risks, and Translational Outcomes",
+        description: "My meta-analysis paper reviews the major stem cell types used in neurological therapies and compares their biological properties. It evaluates their therapeutic potential alongside known risks and translational limitations.",
         link: "#",
         linkText: "Link",
-        tags: ["Human Study Design", "Project Management"],
+        tags: ["Mobile", "Design"],
         image: null
     },
-
     // Add more projects here - they'll appear on projects.html but not on the home page
     // Example with single link:
     // {
