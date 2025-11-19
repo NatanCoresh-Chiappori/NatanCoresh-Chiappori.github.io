@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>Natan Coresh-Chiappori - Personal Website</title>
+    <script>
+        // Make scroll behavior context-aware:
+        // - On a plain refresh, force the page to start at the top and strip section jumps.
+        // - On a normal navigation (including links with #about or ?section=work),
+        //   allow scrolling to the requested section.
+        (function () {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+
+            function isReloadNavigation() {
+                try {
+                    if (window.performance && performance.getEntriesByType) {
+                        const navEntries = performance.getEntriesByType('navigation');
+                        if (navEntries && navEntries.length > 0) {
+                            return navEntries[0].type === 'reload';
+                        }
+                    }
+                    if (window.performance && performance.navigation) {
+                        // Fallback for older browsers
+                        return performance.navigation.type === 1; // TYPE_RELOAD
+                    }
+                } catch (e) {
+                    // If anything fails, just treat as non-reload
+                }
+                return false;
+            }
+
+            const isReload = isReloadNavigation();
+
+            if (isReload) {
+                // On reload: remove hash and any ?section=... so we don't auto-jump
+                try {
+                    const url = new URL(window.location.href);
+
+                    // Strip section query param if present
+                    if (url.searchParams.has('section')) {
+                        url.searchParams.delete('section');
+                    }
+
+                    // Strip hash
+                    url.hash = '';
+
+                    window.history.replaceState(
+                        null,
+                        '',
+                        url.pathname + url.search + url.hash
+                    );
+                } catch (e) {
+                    // Ignore if URL/replaceState not available
+                }
+
+                // Ensure we're at the very top on reload
+                window.addEventListener('load', function () {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                });
+            }
+        })();
+    </script>
+    <style>
+        html, body {
+            scroll-behavior: auto !important;
+            overflow-x: hidden;
+        }
+        body {
+            position: relative;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link home-icon" aria-label="Home">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#work" class="nav-link">Work</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <span class="theme-icon">☀️</span>
+                </button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <canvas id="neuronCanvas" class="neuron-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Hello, I'm</span>
+                <span class="title-line title-main">Natan Coresh-Chiappori</span>
+            </h1>
+            <p class="hero-subtitle"> Graduate Research Scientist</p>
+            <p class="hero-description">I’m a neuroscience researcher and data scientist focused on the intersection of Brain, Behavior, and Artificial Intelligence. 
+                <br> M.S. in Applied Neuroscience at Morgan State University.</p>
+            <div class="hero-profile">
+                <img src="images/profile.jpg" alt="Natan Coresh-Chiappori" class="profile-image">
+            </div>
+            <div class="hero-resume">
+                <a href="resume/resume.pdf" class="btn" target="_blank" rel="noopener noreferrer">Resumé</a>
+            </div>
+            <div class="hero-buttons">
+                <a href="#work" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-intro">I study how technology and social factors shape cognition and emotion.</p>
+                    <p>I’m passionate about using data and design to create human-centered AI systems that promote understanding, well-being, and cognitive health.</p>
+                    <p>At the Neurobiology of Stress Lab, I coordinate behavioral and physiological studies, lead an AI–Human interaction study, program old equipment, and work on different research projects.</p>
+                </div>
+                <div class="about-meta">
+                    <div class="about-skills">
+                        <h3>Skills & Expertise</h3>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Human Study Design
+                                    <span class="skill-emoji">🧪</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Python
+                                    <span class="skill-emoji">🐍</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    R (Programming)
+                                    <span class="skill-emoji">📊</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    UI/UX Design
+                                    <span class="skill-emoji">🎨</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Scientific Writing
+                                    <span class="skill-emoji">✍️</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Mixed-Methods Research
+                                    <span class="skill-emoji">🔬</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Machine Learning
+                                    <span class="skill-emoji">🤖</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Data Analysis
+                                    <span class="skill-emoji">📈</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Project Management
+                                    <span class="skill-emoji">📂</span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            <h3>Languages</h3>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    English
+                                    <!-- Primary English-speaking countries -->
+                                    <span class="skill-emoji">
+                                        <img class="flag-icon" src="https://flagcdn.com/us.svg" alt="United States">
+                                        <img class="flag-icon" src="https://flagcdn.com/gb.svg" alt="United Kingdom">
+                                        <img class="flag-icon" src="https://flagcdn.com/ca.svg" alt="Canada">
+                                        <img class="flag-icon" src="https://flagcdn.com/au.svg" alt="Australia">
+                                        <img class="flag-icon" src="https://flagcdn.com/nz.svg" alt="New Zealand">
+                                        <img class="flag-icon" src="https://flagcdn.com/ie.svg" alt="Ireland">
+                                        <img class="flag-icon" src="https://flagcdn.com/za.svg" alt="South Africa">
+                                    </span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    Spanish
+                                    <!-- Primary Spanish-speaking countries -->
+                                    <span class="skill-emoji">
+                                        <img class="flag-icon" src="https://flagcdn.com/es.svg" alt="Spain">
+                                        <img class="flag-icon" src="https://flagcdn.com/mx.svg" alt="Mexico">
+                                        <img class="flag-icon" src="https://flagcdn.com/co.svg" alt="Colombia">
+                                        <img class="flag-icon" src="https://flagcdn.com/ar.svg" alt="Argentina">
+                                        <img class="flag-icon" src="https://flagcdn.com/cl.svg" alt="Chile">
+                                        <img class="flag-icon" src="https://flagcdn.com/pe.svg" alt="Peru">
+                                    </span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">
+                                    German
+                                    <!-- Primary German-speaking countries -->
+                                    <span class="skill-emoji">
+                                        <img class="flag-icon" src="https://flagcdn.com/de.svg" alt="Germany">
+                                        <img class="flag-icon" src="https://flagcdn.com/at.svg" alt="Austria">
+                                        <img class="flag-icon" src="https://flagcdn.com/ch.svg" alt="Switzerland">
+                                        <img class="flag-icon" src="https://flagcdn.com/li.svg" alt="Liechtenstein">
+                                        <img class="flag-icon" src="https://flagcdn.com/lu.svg" alt="Luxembourg">
+                                    </span>
+                                </span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="work">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Work</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="work-grid" id="featured-projects-grid">
+                <!-- Projects will be loaded dynamically from projects-data.js -->
+            </div>
+            <div class="work-more">
+                <a href="projects.html" class="work-more-link">More projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <canvas id="blogCanvas" class="blog-canvas"></canvas>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">My Blog</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="blog-content">
+                <a href="https://www.thewhylab.blog" class="blog-link" target="_blank" rel="noopener noreferrer">
+                    <span class="blog-text">
+                        TheWhyLab
+                        <span class="blog-hint">
+                            (click here pls
+                            <span class="emoji-container">
+                                <span class="emoji-rotate">:<span class="mouth" id="mouthEmoji">0</span></span>
+                            </span>
+                            )
+                        </span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="contact-content">
+                <div class="social-icons">
+                    <a href="resume/resume.pdf" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Resume">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </a>
+                    <a href="mailto:your.email@example.com" class="social-icon" aria-label="Email">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/yourprofile" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/yourusername" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Natan Coresh-Chiappori. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="projects-data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Load featured projects (first 4)
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('featured-projects-grid');
+            if (container && typeof allProjects !== 'undefined') {
+                renderProjects(container, allProjects, 4);
+            }
+        });
+
+        // Typing effect for hero subtitle
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtitle = document.querySelector('.hero-subtitle');
+            if (subtitle) {
+                const text = subtitle.textContent.trim();
+                subtitle.textContent = '';
+                subtitle.classList.add('typing-cursor');
+                
+                let i = 0;
+                function typeWriter() {
+                    if (i < text.length) {
+                        subtitle.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50); // Fast typing speed (50ms per character)
+                    } else {
+                        // Remove cursor after typing is complete
+                        setTimeout(() => {
+                            subtitle.classList.remove('typing-cursor');
+                        }, 500);
+                    }
+                }
+                
+                // Start typing after a short delay
+                setTimeout(typeWriter, 500);
+            }
+        });
+
+        // Reactive Neuron Background
+        (function() {
+            const canvas = document.getElementById('neuronCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            // Get colors that adapt to theme (black on light, white on dark)
+            function getNodeColor() {
+                const theme = document.documentElement.getAttribute('data-theme');
+                return theme === 'light' ? '#000000' : '#ffffff';
+            }
+            
+            function getBackgroundColor() {
+                const theme = document.documentElement.getAttribute('data-theme');
+                return theme === 'light' ? '#ffffff' : '#000000';
+            }
+            
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                // Fill with background color
+                ctx.fillStyle = getBackgroundColor();
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Neuron-like Node class
+            class Node {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.2;
+                    this.vy = (Math.random() - 0.5) * 0.2;
+                    this.size = 3; // Slightly larger
+                    this.angle = Math.random() * Math.PI * 2; // For neuron-like extensions
+                    this.hoverDistance = Infinity; // Track mouse hover distance
+                }
+                
+                update(nodes) {
+                    // Calculate distance to mouse for hover effect
+                    const dxToMouse = mouseX - this.x;
+                    const dyToMouse = mouseY - this.y;
+                    this.hoverDistance = Math.sqrt(dxToMouse * dxToMouse + dyToMouse * dyToMouse);
+                    
+                    // Gentle interaction with other nodes
+                    let fx = 0;
+                    let fy = 0;
+                    
+                    for (let other of nodes) {
+                        if (other === this) continue;
+                        
+                        const dx = other.x - this.x;
+                        const dy = other.y - this.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0 && distance < 60) {
+                            // Repulsion when too close
+                            const force = (60 - distance) / 60;
+                            fx -= (dx / distance) * force * 0.04;
+                            fy -= (dy / distance) * force * 0.04;
+                        }
+                    }
+                    
+                    // Hover effect - more reactive movement
+                    if (this.hoverDistance < 60) {
+                        // Strong repulsion when very close
+                        const force = (60 - this.hoverDistance) / 60;
+                        fx -= (dxToMouse / this.hoverDistance) * force * 0.25;
+                        fy -= (dyToMouse / this.hoverDistance) * force * 0.25;
+                    } else if (this.hoverDistance < 150) {
+                        // Moderate attraction at medium distance
+                        const force = (150 - this.hoverDistance) / 150;
+                        fx += (dxToMouse / this.hoverDistance) * force * 0.08;
+                        fy += (dyToMouse / this.hoverDistance) * force * 0.08;
+                    } else if (this.hoverDistance < 250) {
+                        // Gentle attraction at far distance
+                        const force = (250 - this.hoverDistance) / 250;
+                        fx += (dxToMouse / this.hoverDistance) * force * 0.03;
+                        fy += (dyToMouse / this.hoverDistance) * force * 0.03;
+                    }
+                    
+                    // Apply forces
+                    this.vx += fx;
+                    this.vy += fy;
+                    
+                    // Apply velocity with less damping for more reactivity
+                    this.vx *= 0.97;
+                    this.vy *= 0.97;
+                    
+                    // Update position
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    // Wrap around edges
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                    if (this.y > canvas.height) this.y = 0;
+                }
+                
+                draw() {
+                    const color = getNodeColor();
+                    ctx.strokeStyle = color;
+                    ctx.fillStyle = color;
+                    ctx.lineWidth = 1;
+                    
+                    // Draw small extensions (neuron-like)
+                    const extLength = 8;
+                    const extCount = 4;
+                    for (let i = 0; i < extCount; i++) {
+                        const angle = this.angle + (i * Math.PI * 2 / extCount);
+                        const endX = this.x + Math.cos(angle) * extLength;
+                        const endY = this.y + Math.sin(angle) * extLength;
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(this.x, this.y);
+                        ctx.lineTo(endX, endY);
+                        ctx.stroke();
+                    }
+                    
+                    // Draw cell body (soma)
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw center dot (nucleus)
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Create neurons - dense network
+            const nodeCount = 120;
+            const nodes = [];
+            for (let i = 0; i < nodeCount; i++) {
+                nodes.push(new Node());
+            }
+            
+            // Mouse tracking
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // Animation loop
+            function animate() {
+                // Clear with background color
+                ctx.fillStyle = getBackgroundColor();
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Update and draw nodes
+                nodes.forEach(node => {
+                    node.update(nodes);
+                    node.draw();
+                });
+                
+                // Draw connections - fully interconnected network
+                const color = getNodeColor();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                
+                // Connect ALL nodes that are within range (fully interconnected)
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        // Connect if nodes are within range (dense network)
+                        if (distance < 180) {
+                            // More visible lines
+                            const opacity = ((180 - distance) / 180) * 0.6;
+                            ctx.globalAlpha = opacity;
+                            
+                            // Draw straight line connection
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                
+                ctx.globalAlpha = 1;
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        })();
+    </script>
+
+    <!-- Magnetic Filaments for Blog Section -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('blogCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const blogSection = document.getElementById('blog');
+            let mouseX = 0;
+            let mouseY = 0;
+            let isMouseInSection = false;
+            
+            // Get colors that adapt to theme
+            function getFilamentColor() {
+                const theme = document.documentElement.getAttribute('data-theme');
+                return theme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
+            }
+            
+            function getBackgroundColor() {
+                const theme = document.documentElement.getAttribute('data-theme');
+                return theme === 'light' ? '#ffffff' : '#000000';
+            }
+            
+            // Set canvas size
+            function resizeCanvas() {
+                if (!blogSection) return;
+                const rect = blogSection.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Resize when section becomes visible (for initial load)
+            const resizeObserver = new ResizeObserver(() => {
+                resizeCanvas();
+            });
+            if (blogSection) {
+                resizeObserver.observe(blogSection);
+            }
+            
+            // Filament class
+            class Filament {
+                constructor() {
+                    this.reset();
+                }
+                
+                reset() {
+                    // Start from random edge
+                    const edge = Math.floor(Math.random() * 4);
+                    if (edge === 0) { // Top
+                        this.x = Math.random() * canvas.width;
+                        this.y = 0;
+                    } else if (edge === 1) { // Right
+                        this.x = canvas.width;
+                        this.y = Math.random() * canvas.height;
+                    } else if (edge === 2) { // Bottom
+                        this.x = Math.random() * canvas.width;
+                        this.y = canvas.height;
+                    } else { // Left
+                        this.x = 0;
+                        this.y = Math.random() * canvas.height;
+                    }
+                    
+                    this.vx = (Math.random() - 0.5) * 1.5;
+                    this.vy = (Math.random() - 0.5) * 1.5;
+                    this.length = 20 + Math.random() * 40;
+                    this.segments = [];
+                    this.maxSegments = 20;
+                }
+                
+                update(filaments, mouseStatic, mouseX, mouseY) {
+                    if (!isMouseInSection) {
+                        // Move randomly when mouse is not in section
+                        this.x += this.vx;
+                        this.y += this.vy;
+                    } else {
+                        // Simple magnetic attraction to mouse
+                        const dx = mouseX - this.x;
+                        const dy = mouseY - this.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0) {
+                            // Attraction to mouse
+                            const force = distance < 100 ? 0.25 : 0.1;
+                            this.vx += (dx / distance) * force;
+                            this.vy += (dy / distance) * force;
+                        }
+                    }
+                    
+                    // Apply velocity with less damping for faster movement
+                    this.vx *= 0.97;
+                    this.vy *= 0.97;
+                    
+                    // Update position
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    // Wrap around edges instead of disappearing
+                    if (this.x < 0) {
+                        this.x = canvas.width;
+                        // Reset segments when wrapping for cleaner look
+                        this.segments = [];
+                    } else if (this.x > canvas.width) {
+                        this.x = 0;
+                        this.segments = [];
+                    }
+                    if (this.y < 0) {
+                        this.y = canvas.height;
+                        this.segments = [];
+                    } else if (this.y > canvas.height) {
+                        this.y = 0;
+                        this.segments = [];
+                    }
+                    
+                    // Add segment
+                    this.segments.push({ x: this.x, y: this.y });
+                    if (this.segments.length > this.maxSegments) {
+                        this.segments.shift();
+                    }
+                }
+                
+                draw() {
+                    const color = getFilamentColor();
+                    
+                    if (this.segments.length < 2) return;
+                    
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1.5;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    
+                    // Draw smooth curve through segments
+                    ctx.beginPath();
+                    ctx.moveTo(this.segments[0].x, this.segments[0].y);
+                    
+                    for (let i = 1; i < this.segments.length; i++) {
+                        const prev = this.segments[i - 1];
+                        const curr = this.segments[i];
+                        const next = this.segments[i + 1] || curr;
+                        
+                        // Use quadratic curve for smoothness
+                        const cpX = (curr.x + next.x) / 2;
+                        const cpY = (curr.y + next.y) / 2;
+                        ctx.quadraticCurveTo(curr.x, curr.y, cpX, cpY);
+                    }
+                    
+                    ctx.stroke();
+                    
+                    // Draw glowing end point
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Create more filaments
+            const filamentCount = 50;
+            const filaments = [];
+            for (let i = 0; i < filamentCount; i++) {
+                filaments.push(new Filament());
+            }
+            
+            // Mouse tracking
+            blogSection.addEventListener('mousemove', (e) => {
+                const rect = blogSection.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+                isMouseInSection = true;
+            });
+            
+            blogSection.addEventListener('mouseleave', () => {
+                isMouseInSection = false;
+            });
+            
+            // Animation loop
+            function animate() {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Update and draw filaments
+                filaments.forEach(filament => {
+                    filament.update(filaments, false, mouseX, mouseY);
+                    filament.draw();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            // Set mouth animation duration between 9 and 12 seconds
+            const mouthEmoji = document.getElementById('mouthEmoji');
+            if (mouthEmoji) {
+                const randomDuration = 9 + Math.random() * 3; // 9 to 12 seconds
+                mouthEmoji.style.setProperty('--mouth-duration', randomDuration + 's');
+            }
+        })();
+    </script>
+</body>
+</html>
+
