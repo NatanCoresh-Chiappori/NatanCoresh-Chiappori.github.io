@@ -34,7 +34,7 @@ const allProjects = [
         title: "Problem Children? When Embeddings Misbehave",
         description: " This was my Datathon team’s winning presentation at the 2025 Atlanta Datathon hosted by Emory University School of Medicine. I presented and helped develop both the idea and the slides for our project on bias in medical-image embedding foundation models.",
         link: "https://docs.google.com/presentation/d/1iWAs6DJMn8mY4hCjhmA5dZwBBBAqyDy4Z0o9BwZzVf0/edit?usp=sharing",
-        linkText: "View Research",
+        linkText: "View Presentation",
         tags: ["Machine Learning", "Neuroscience", "Python", "Research"],
         image: null
     },

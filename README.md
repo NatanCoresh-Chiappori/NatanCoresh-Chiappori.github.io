@@ -26,12 +26,21 @@ A beautiful, Apple-inspired personal website with dark mode design. Built with m
 
 ## 🚀 Pushing Changes to Live Website
 
-Your website is connected to GitHub and Netlify for automatic deployment!
+Your website is connected to GitHub Pages for automatic deployment!
 
-### Quick Method (Easiest)
-1. **Double-click** `push-changes.ps1` 
+**Your live site:** https://natancoresh-chiappori.github.io/
+
+### Quick Method (Easiest) - Just Double-Click!
+
+**Windows Users:**
+1. **Double-click** `PUSH-TO-GITHUB.bat` (the easiest option!)
+2. Enter a commit message when prompted (or press Enter for auto)
+3. Done! GitHub Pages will auto-deploy in 1-2 minutes
+
+**PowerShell Users:**
+1. **Double-click** `PUSH-TO-GITHUB.ps1` 
 2. Follow the prompts to enter a commit message
-3. Done! Netlify will auto-deploy in ~30 seconds
+3. Done! GitHub Pages will auto-deploy in 1-2 minutes
 
 ### Manual Method
 
@@ -48,11 +57,13 @@ git commit -m "Update: your changes here"
 git push
 ```
 
-Netlify automatically detects the push and redeploys your site!
+GitHub Pages automatically detects the push and redeploys your site!
 
 ### Check Deployment Status
-- Visit your Netlify dashboard to see deployment status
-- Your site URL: Check your Netlify site settings
+- **Your live site:** https://natancoresh-chiappori.github.io/
+- **Deployment status:** https://github.com/NatanCoresh-Chiappori/personal-website/actions
+- **GitHub Pages settings:** Repository → Settings → Pages
+- **Benefits**: Free hosting, unlimited bandwidth, free SSL, automatic deployments!
 
 ## Customization
 

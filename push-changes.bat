@@ -19,7 +19,7 @@ for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set da
 set timestamp=%datetime:~0,4%-%datetime:~4,2%-%datetime:~6,2% %datetime:~8,2%:%datetime:~10,2%
 
 REM Commit with auto-generated message
-echo Committing changes...
+echo Committing changes with auto-generated message...
 git commit -m "Update: %timestamp%"
 
 REM Pull first to sync with remote
@@ -31,8 +31,9 @@ echo Pushing to GitHub...
 git push
 
 echo.
-echo Done! Netlify will auto-deploy your changes in ~30 seconds.
-echo Check your Netlify dashboard for deployment status.
+echo Done! GitHub Pages will auto-deploy your changes in ~1-2 minutes.
+echo Your site: https://natancoresh-chiappori.github.io/
+echo Check GitHub Actions for deployment status.
 echo.
 pause
 
