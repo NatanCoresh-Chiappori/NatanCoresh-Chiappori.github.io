@@ -119,7 +119,7 @@
             </h1>
             <p class="hero-subtitle"> Graduate Research Scientist, Applied Neuroscience, 
                 <br> Morgan State University</p>
-            <p class="hero-description">I build and study technologies designed to enhance human well-being and deepen our understanding of the mind.
+            <p class="hero-description">I build and study technologies designed to enhance human well-being and deepen our understanding of the mind.</p>
             <div class="hero-profile">
                 <img src="images/profile.jpg" alt="Natan Coresh-Chiappori" class="profile-image">
             </div>
@@ -454,6 +454,52 @@
                     
                     // Start typing after a short delay
                     setTimeout(typeWriter, 500);
+                }
+            }
+        });
+
+        // Typing effect for hero description (optimized, disabled on mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            const description = document.querySelector('.hero-description');
+            if (description) {
+                // On mobile, show text immediately without animation
+                if (window.innerWidth <= 768) {
+                    description.classList.remove('typing-cursor');
+                } else {
+                    // Get the original text content
+                    const originalText = description.textContent.trim();
+                    
+                    // Clear and add cursor
+                    description.textContent = '';
+                    description.classList.add('typing-cursor');
+                    
+                    let charIndex = 0;
+                    let lastTime = performance.now();
+                    const targetFPS = 60;
+                    const frameTime = 1000 / targetFPS;
+                    
+                    function typeWriter(currentTime) {
+                        if (charIndex < originalText.length) {
+                            // Use requestAnimationFrame for smoother animation
+                            const elapsed = currentTime - lastTime;
+                            if (elapsed >= 30) { // Type every ~30ms for good speed
+                                description.textContent += originalText.charAt(charIndex);
+                                charIndex++;
+                                lastTime = currentTime;
+                            }
+                            requestAnimationFrame(typeWriter);
+                        } else {
+                            // Remove cursor after typing is complete
+                            setTimeout(() => {
+                                description.classList.remove('typing-cursor');
+                            }, 500);
+                        }
+                    }
+                    
+                    // Start typing after subtitle finishes (approximately)
+                    setTimeout(() => {
+                        requestAnimationFrame(typeWriter);
+                    }, 2000);
                 }
             }
         });
