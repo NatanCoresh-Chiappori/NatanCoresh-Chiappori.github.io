@@ -405,7 +405,7 @@ html.theme-flash::before {
     text-align: center;
     background-color: var(--bg-primary);
     overflow: hidden;
-    z-index: 100; /* Ensure hero section stays above background elements */
+    z-index: 200; /* Much higher than sections (50) to ensure hero stays visible */
 }
 
 /* Responsive hero padding */
@@ -434,7 +434,7 @@ html.theme-flash::before {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: 1; /* Above hero background, below content */
     pointer-events: none;
     background-color: var(--bg-primary);
 }
@@ -444,7 +444,7 @@ html.theme-flash::before {
     max-width: 800px;
     animation: fadeInUp 1s ease;
     position: relative;
-    z-index: 101; /* Higher than hero to ensure content appears above overlay */
+    z-index: 201; /* Higher than hero (200) to ensure content appears above canvas */
     width: 100%;
     padding: 0 20px;
     margin-left: auto;
@@ -726,13 +726,13 @@ html.theme-flash::before {
 section {
     padding: 80px 0;
     position: relative;
-    z-index: 50; /* Lower than hero to ensure hero content stays visible */
+    z-index: 10; /* Much lower than hero (200) to ensure hero stays visible when scrolling */
 }
 
 /* Work section - ensure it doesn't cover hero buttons */
 #work {
     position: relative;
-    z-index: 50;
+    z-index: 10; /* Lower than hero */
 }
 
 /* Ensure all sections respect navbar space on desktop */
@@ -766,7 +766,7 @@ section {
 .about {
     background: var(--bg-secondary);
     position: relative;
-    z-index: 50; /* Lower than hero to ensure hero buttons stay visible */
+    z-index: 10; /* Much lower than hero (200) to ensure hero buttons stay visible */
 }
 
 .about-content {
@@ -1182,7 +1182,7 @@ section {
     background: var(--bg-primary);
     position: relative;
     overflow: hidden;
-    z-index: 50; /* Lower than hero to ensure hero buttons stay visible */
+    z-index: 10; /* Much lower than hero (200) to ensure hero buttons stay visible */
 }
 
 /* Ensure blog section container doesn't overflow on mobile */
@@ -1558,7 +1558,7 @@ section {
 .contact {
     background: var(--bg-secondary);
     position: relative;
-    z-index: 50; /* Lower than hero to ensure hero buttons stay visible */
+    z-index: 10; /* Much lower than hero (200) to ensure hero buttons stay visible */
 }
 
 .contact-intro {
