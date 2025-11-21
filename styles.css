@@ -68,7 +68,22 @@ body {
     transition: background-color 0.3s ease, 
                 color 0.3s ease, 
                 border-color 0.3s ease,
-                box-shadow 0.3s ease;
+                box-shadow 0.3s ease,
+                transform 0.3s ease;
+}
+
+/* Ensure animations and transitions work on desktop by default */
+@media (min-width: 769px) {
+    * {
+        animation-duration: inherit !important;
+        animation-iteration-count: inherit !important;
+        transition-duration: inherit !important;
+        transition-delay: inherit !important;
+    }
+    
+    html {
+        scroll-behavior: smooth !important;
+    }
 }
 
 .container {
@@ -1807,18 +1822,22 @@ section {
 
 /* Reduce animations on mobile devices ONLY */
 @media (max-width: 768px) {
-    /* Disable or reduce animations - be more specific to avoid affecting desktop */
-    html *,
-    html *::before,
-    html *::after {
+    /* Disable or reduce animations on mobile only */
+    html {
+        scroll-behavior: auto !important;
+    }
+    
+    /* Only apply animation restrictions to specific elements, not universal selector */
+    section *,
+    .work-item *,
+    .publication-card *,
+    .btn *,
+    .nav-link *,
+    .social-icon * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.1s !important;
         transition-delay: 0s !important;
-    }
-    
-    html {
-        scroll-behavior: auto !important;
     }
     
     /* Disable transform animations on mobile only */
@@ -1908,8 +1927,32 @@ section {
     }
 }
 
-/* Ensure desktop animations are fully enabled (above 768px) */
+/* Ensure desktop animations are fully enabled (above 768px) - MUST come after mobile rules */
 @media (min-width: 769px) {
+    /* Explicitly enable all animations and transitions on desktop */
+    html {
+        scroll-behavior: smooth !important;
+    }
+    
+    /* Remove any animation restrictions for desktop */
+    section *,
+    .work-item *,
+    .publication-card *,
+    .btn *,
+    .nav-link *,
+    .social-icon *,
+    .fade-in,
+    .scroll-indicator,
+    .mouse,
+    .hero-subtitle,
+    .mouth,
+    .skill-progress {
+        animation-duration: initial !important;
+        animation-iteration-count: initial !important;
+        transition-duration: initial !important;
+        transition-delay: initial !important;
+    }
+    
     /* Restore all hover animations on desktop */
     .work-item:hover,
     .work-item-link:hover {
@@ -1954,14 +1997,14 @@ section {
     
     /* Ensure fade-in animations work on desktop */
     .fade-in {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        opacity: 0 !important;
+        transform: translateY(30px) !important;
+        transition: opacity 0.6s ease, transform 0.6s ease !important;
     }
     
     .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
     
     /* Restore scroll indicator animation on desktop */
@@ -2005,18 +2048,26 @@ section {
     
     /* Ensure transitions work properly on desktop */
     .work-item,
-    .work-item-link,
-    .publication-card,
-    .social-icon,
-    .profile-image,
+    .work-item-link {
+        transition: all 0.4s ease !important;
+    }
+    
+    .publication-card {
+        transition: all 0.3s ease !important;
+    }
+    
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .profile-image {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    }
+    
     .btn,
     .work-link,
     .nav-link {
         transition: all 0.3s ease !important;
-    }
-    
-    .work-item {
-        transition: all 0.4s ease !important;
     }
     
     .work-image img {
