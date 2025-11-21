@@ -119,7 +119,7 @@
             </h1>
             <p class="hero-subtitle"> Graduate Research Scientist, Applied Neuroscience, 
                 <br> Morgan State University</p>
-            <p class="hero-description">I build and study technologies designed to enhance human well-being and deepen our understanding of the mind.</p>
+            <p class="hero-description">I build and study technologies designed to enhance human well-being and deepen our understanding of the mind.
             <div class="hero-profile">
                 <img src="images/profile.jpg" alt="Natan Coresh-Chiappori" class="profile-image">
             </div>
@@ -145,8 +145,9 @@
             </div>
             <div class="about-content">
                 <div class="about-text">
-                    <p class="about-intro"’m passionate about using data and design to create human-centered AI systems that promote understanding, well-being, and cognitive health.</p>
-                        <p>At the Neurobiology of Stress Lab, I coordinate behavioral and physiological studies, lead an AI–Human interaction study, program (probably too) old equipment, and work on different research projects.</p>
+                    <p class="about-intro">I study how technology and social factors shape cognition and emotion.</p>
+                    <p>I’m passionate about using data and design to create human-centered AI systems that promote understanding, well-being, and cognitive health.</p>
+                    <p>At the Neurobiology of Stress Lab, I coordinate behavioral and physiological studies, lead an AI–Human interaction study, program old equipment, and work on different research projects.</p>
                 </div>
                 <div class="about-meta">
                     <div class="about-skills">
@@ -433,8 +434,7 @@
                             if (part.type === 'break') {
                                 subtitle.innerHTML += '<br>';
                                 partIndex++;
-                                // Minimal delay after line break for seamless transition
-                                setTimeout(typeWriter, 10);
+                                setTimeout(typeWriter, 50);
                             } else if (charIndex < part.content.length) {
                                 subtitle.innerHTML += part.content.charAt(charIndex);
                                 charIndex++;
@@ -442,8 +442,7 @@
                             } else {
                                 partIndex++;
                                 charIndex = 0;
-                                // Minimal delay between text parts
-                                setTimeout(typeWriter, 10);
+                                setTimeout(typeWriter, 50);
                             }
                         } else {
                             // Remove cursor after typing is complete
