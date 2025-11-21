@@ -118,7 +118,7 @@
                 <span class="title-line title-main">Natan Coresh-Chiappori</span>
             </h1>
             <p class="hero-subtitle"> Graduate Research Scientist</p>
-            <p class="hero-description">I’m a neuroscience researcher and data scientist focused on the intersection of Brain, Behavior, and Artificial Intelligence. 
+            <p class="hero-description">I’m a neuroscience researcher and data scientist focused on the intersection of the Brain, Behavior, and Artificial Intelligence. I am focused on developing and examining the real impacts of technology on improving human well-being.
                 <br> M.S. in Applied Neuroscience at Morgan State University.</p>
             <div class="hero-profile">
                 <img src="images/profile.jpg" alt="Natan Coresh-Chiappori" class="profile-image">
@@ -460,8 +460,12 @@
             
             // Set canvas size with high DPI support for sharp rendering
             let dpr = window.devicePixelRatio || 1;
+            let nodes = []; // Declare nodes array early so it can be used in resize
+            
             function resizeCanvas() {
                 const rect = canvas.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return;
+                
                 dpr = window.devicePixelRatio || 1;
                 
                 // Set display size
@@ -480,15 +484,21 @@
                 ctx.fillStyle = getBackgroundColor();
                 ctx.fillRect(0, 0, rect.width, rect.height);
             }
+            
+            // Initial resize
             resizeCanvas();
+            
+            // Resize handler - update nodes if they exist
             window.addEventListener('resize', () => {
                 resizeCanvas();
                 // Update node positions if they're outside bounds
-                const rect = canvas.getBoundingClientRect();
-                nodes.forEach(node => {
-                    if (node.x > rect.width) node.x = rect.width;
-                    if (node.y > rect.height) node.y = rect.height;
-                });
+                if (nodes && nodes.length > 0) {
+                    const rect = canvas.getBoundingClientRect();
+                    nodes.forEach(node => {
+                        if (node.x > rect.width) node.x = rect.width;
+                        if (node.y > rect.height) node.y = rect.height;
+                    });
+                }
             });
             
             // Also resize when hero section changes
@@ -623,7 +633,7 @@
             
             // Create neurons - more nodes on desktop for richer animation
             const nodeCount = isMobile ? 20 : 80; // More nodes on desktop for better visual effect
-            const nodes = [];
+            // nodes array already declared above
             for (let i = 0; i < nodeCount; i++) {
                 nodes.push(new Node());
             }
@@ -729,24 +739,37 @@
             // Start animation - ensure it runs
             function startAnimation() {
                 const rect = canvas.getBoundingClientRect();
-                if (rect.width > 0 && rect.height > 0) {
+                console.log('startAnimation called:', {
+                    width: rect.width,
+                    height: rect.height,
+                    nodesCount: nodes ? nodes.length : 0,
+                    isMobile: isMobile
+                });
+                
+                if (rect.width > 0 && rect.height > 0 && nodes && nodes.length > 0) {
                     // Ensure canvas is properly sized
                     resizeCanvas();
                     // Force a redraw to ensure visibility
                     ctx.fillStyle = getBackgroundColor();
                     ctx.fillRect(0, 0, rect.width, rect.height);
-                    // Start animation loop
-                    animate();
+                    // Start animation loop if not already running
+                    if (!animationRunning) {
+                        console.log('Starting animation loop');
+                        animationRunning = true;
+                        animate();
+                    }
                 } else {
                     // Canvas might not be sized yet, wait a bit
+                    console.log('Waiting for canvas to be ready...');
                     setTimeout(startAnimation, 100);
                 }
             }
             
-            // Ensure animation starts after a short delay to allow DOM to settle
+            // Start animation after nodes are created (nodes already created above)
+            // Ensure animation starts after nodes are created and DOM is settled
             setTimeout(() => {
                 startAnimation();
-            }, 200);
+            }, 100);
             }
             
             // Initialize when DOM is ready
