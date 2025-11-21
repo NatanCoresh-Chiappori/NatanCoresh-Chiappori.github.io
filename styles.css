@@ -1686,6 +1686,59 @@ section {
     }
 }
 
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.1s !important;
+        transition-delay: 0s !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .work-item:hover,
+    .work-item-link:hover,
+    .publication-card:hover,
+    .social-icon:hover,
+    .profile-image:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .hero-resume .btn:hover,
+    .work-link:hover,
+    .nav-link:hover:not(.active) {
+        transform: none !important;
+    }
+    
+    .fade-in {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .hero-content {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    
+    .scroll-indicator,
+    .mouse::before,
+    .hero-subtitle.typing-cursor::after,
+    .mouth,
+    .nav-link.pop-out {
+        animation: none !important;
+    }
+    
+    html.theme-flash::before {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+    
+    .skill-progress {
+        transition: none !important;
+    }
+}
+
 /* Reduce animations on mobile devices */
 @media (max-width: 768px) {
     /* Disable or reduce animations */

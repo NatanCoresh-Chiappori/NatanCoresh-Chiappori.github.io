@@ -391,30 +391,36 @@
             }
         });
 
-        // Typing effect for hero subtitle
+        // Typing effect for hero subtitle (disabled on mobile)
         document.addEventListener('DOMContentLoaded', function() {
             const subtitle = document.querySelector('.hero-subtitle');
             if (subtitle) {
-                const text = subtitle.textContent.trim();
-                subtitle.textContent = '';
-                subtitle.classList.add('typing-cursor');
-                
-                let i = 0;
-                function typeWriter() {
-                    if (i < text.length) {
-                        subtitle.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 50); // Fast typing speed (50ms per character)
-                    } else {
-                        // Remove cursor after typing is complete
-                        setTimeout(() => {
-                            subtitle.classList.remove('typing-cursor');
-                        }, 500);
+                // On mobile, show text immediately without animation
+                if (window.innerWidth <= 768) {
+                    // Text is already visible, just remove any cursor
+                    subtitle.classList.remove('typing-cursor');
+                } else {
+                    const text = subtitle.textContent.trim();
+                    subtitle.textContent = '';
+                    subtitle.classList.add('typing-cursor');
+                    
+                    let i = 0;
+                    function typeWriter() {
+                        if (i < text.length) {
+                            subtitle.textContent += text.charAt(i);
+                            i++;
+                            setTimeout(typeWriter, 50); // Fast typing speed (50ms per character)
+                        } else {
+                            // Remove cursor after typing is complete
+                            setTimeout(() => {
+                                subtitle.classList.remove('typing-cursor');
+                            }, 500);
+                        }
                     }
+                    
+                    // Start typing after a short delay
+                    setTimeout(typeWriter, 500);
                 }
-                
-                // Start typing after a short delay
-                setTimeout(typeWriter, 500);
             }
         });
 
@@ -797,24 +803,26 @@
                 }
             }
             
-            // Create more filaments
-            const filamentCount = 50;
+            // Create fewer filaments on mobile
+            const filamentCount = isMobile ? 15 : 50;
             const filaments = [];
             for (let i = 0; i < filamentCount; i++) {
                 filaments.push(new Filament());
             }
             
-            // Mouse tracking
-            blogSection.addEventListener('mousemove', (e) => {
-                const rect = blogSection.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
-                isMouseInSection = true;
-            });
-            
-            blogSection.addEventListener('mouseleave', () => {
-                isMouseInSection = false;
-            });
+            // Mouse tracking (disabled on mobile)
+            if (!isMobile) {
+                blogSection.addEventListener('mousemove', (e) => {
+                    const rect = blogSection.getBoundingClientRect();
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+                    isMouseInSection = true;
+                });
+                
+                blogSection.addEventListener('mouseleave', () => {
+                    isMouseInSection = false;
+                });
+            }
             
             // Animation loop
             function animate() {
