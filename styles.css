@@ -1211,16 +1211,16 @@ section {
     justify-content: flex-start;
     align-items: center;
     padding: 60px 0;
-    padding-left: max(40px, calc(240px + 40px)); /* Space for navbar on desktop */
     position: relative;
     z-index: 2;
     width: 100%;
     overflow: hidden;
 }
 
-@media (max-width: 1024px) {
+/* Desktop: reduce left padding since container already has padding */
+@media (min-width: 769px) {
     .blog-content {
-        padding-left: max(32px, calc(220px + 30px));
+        padding-left: 0; /* Container already handles the spacing */
     }
 }
 
