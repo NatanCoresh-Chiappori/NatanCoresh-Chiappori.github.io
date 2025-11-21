@@ -498,7 +498,7 @@ html.theme-flash::before {
 
 .title-line {
     display: block;
-    font-size: clamp(40px, 9vw, 96px);
+    font-size: clamp(50px, 10vw, 96px);
     font-weight: 300;
     letter-spacing: -3px;
     line-height: 1.05;
