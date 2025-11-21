@@ -240,8 +240,9 @@ window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero-content');
     if (hero && scrolled < window.innerHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-        hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+        // Reduced parallax - only slight movement, NO opacity fade to keep buttons visible
+        hero.style.transform = `translateY(${scrolled * 0.1}px)`;
+        hero.style.opacity = 1; // Always keep at 1 so buttons stay visible
     }
 });
 
