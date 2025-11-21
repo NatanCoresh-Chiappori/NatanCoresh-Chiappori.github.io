@@ -437,6 +437,8 @@ html.theme-flash::before {
     z-index: 1; /* Above hero background, below content */
     pointer-events: none;
     background-color: var(--bg-primary);
+    opacity: 1; /* Ensure canvas is visible */
+    visibility: visible; /* Ensure canvas is visible */
 }
 
 

@@ -669,8 +669,8 @@
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
                         if (distance < connectionRange) {
-                            // More visible but still subtle connections
-                            const maxOpacity = isMobile ? 0.3 : 0.4;
+                            // More visible connections on desktop
+                            const maxOpacity = isMobile ? 0.3 : 0.5;
                             const opacity = ((connectionRange - distance) / connectionRange) * maxOpacity;
                             ctx.globalAlpha = opacity;
                             
@@ -732,13 +732,21 @@
                 if (rect.width > 0 && rect.height > 0) {
                     // Ensure canvas is properly sized
                     resizeCanvas();
+                    // Force a redraw to ensure visibility
+                    ctx.fillStyle = getBackgroundColor();
+                    ctx.fillRect(0, 0, rect.width, rect.height);
+                    // Start animation loop
                     animate();
                 } else {
                     // Canvas might not be sized yet, wait a bit
                     setTimeout(startAnimation, 100);
                 }
             }
-            startAnimation();
+            
+            // Ensure animation starts after a short delay to allow DOM to settle
+            setTimeout(() => {
+                startAnimation();
+            }, 200);
             }
             
             // Initialize when DOM is ready
