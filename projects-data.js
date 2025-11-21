@@ -7,8 +7,8 @@ const allProjects = [
     {
         title: "Human-AI Intimacy Research Grant",
         description: "I was awarded a grant to characterize the prevalence, motivations, boundaries, and usage patterns of human-AI intimacy; and examine psychosocial, behavioral, and regional correlates associated with such use.",
-        link: "#",
-        linkText: "Link to Paper (preprint)",
+        // link: "#",
+        // linkText: "Link to Paper (preprint)",
         tags: ["Human Study Design", "Python", "Mixed-Methods Research"],
         image: null // null = placeholder, or use "images/project-name.jpg"
     },
