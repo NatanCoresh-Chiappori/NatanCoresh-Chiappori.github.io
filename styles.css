@@ -74,15 +74,18 @@ body {
 
 /* Ensure animations and transitions work on desktop by default */
 @media (min-width: 769px) {
-    * {
-        animation-duration: inherit !important;
-        animation-iteration-count: inherit !important;
-        transition-duration: inherit !important;
-        transition-delay: inherit !important;
-    }
-    
     html {
         scroll-behavior: smooth !important;
+    }
+    
+    /* Explicitly enable animations for all elements on desktop - override mobile restrictions */
+    body *,
+    body *::before,
+    body *::after {
+        animation-duration: revert !important;
+        animation-iteration-count: revert !important;
+        transition-duration: revert !important;
+        transition-delay: revert !important;
     }
 }
 
@@ -1827,13 +1830,10 @@ section {
         scroll-behavior: auto !important;
     }
     
-    /* Only apply animation restrictions to specific elements, not universal selector */
-    section *,
-    .work-item *,
-    .publication-card *,
-    .btn *,
-    .nav-link *,
-    .social-icon * {
+    /* Apply animation restrictions only on mobile */
+    body *,
+    body *::before,
+    body *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.1s !important;
@@ -1955,11 +1955,11 @@ section {
     .mouth,
     .skill-progress,
     .work-image img {
-        /* Remove animation restrictions - let browser use default/inherited values */
-        animation-duration: unset !important;
-        animation-iteration-count: unset !important;
-        transition-duration: unset !important;
-        transition-delay: unset !important;
+        /* Remove animation restrictions - explicitly restore normal values */
+        animation-duration: revert !important;
+        animation-iteration-count: revert !important;
+        transition-duration: revert !important;
+        transition-delay: revert !important;
     }
     
     /* Explicitly set transitions for interactive elements */

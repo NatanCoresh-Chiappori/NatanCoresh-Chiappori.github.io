@@ -426,11 +426,22 @@
 
         // Reactive Neuron Background (reduced on mobile)
         (function() {
-            const canvas = document.getElementById('neuronCanvas');
-            if (!canvas) return;
+            // Wait for DOM to be ready
+            function initNeuronCanvas() {
+                const canvas = document.getElementById('neuronCanvas');
+                if (!canvas) {
+                    // Retry if canvas doesn't exist yet
+                    setTimeout(initNeuronCanvas, 100);
+                    return;
+                }
             
-            // Reduce animation intensity on mobile
-            const isMobile = window.innerWidth <= 768;
+            // Reduce animation intensity on mobile - check dynamically
+            let isMobile = window.innerWidth <= 768;
+            
+            // Update mobile status on resize
+            window.addEventListener('resize', () => {
+                isMobile = window.innerWidth <= 768;
+            });
             
             const ctx = canvas.getContext('2d');
             let mouseX = 0;
@@ -588,7 +599,7 @@
             
             // Animation loop
             function animate() {
-                // Clear with background color
+                // Clear with background color - check theme on each frame
                 ctx.fillStyle = getBackgroundColor();
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
@@ -632,7 +643,38 @@
                 requestAnimationFrame(animate);
             }
             
-            animate();
+            // Listen for theme changes and redraw canvas
+            const themeObserver = new MutationObserver(() => {
+                // Force a redraw by clearing and refilling
+                ctx.fillStyle = getBackgroundColor();
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            themeObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+            
+            // Start animation - ensure it runs
+            if (canvas.width > 0 && canvas.height > 0) {
+                animate();
+            } else {
+                // Canvas might not be sized yet, wait a bit
+                setTimeout(() => {
+                    if (canvas.width > 0 && canvas.height > 0) {
+                        animate();
+                    }
+                }, 100);
+            }
+            }
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNeuronCanvas);
+            } else {
+                // Small delay to ensure canvas is rendered
+                setTimeout(initNeuronCanvas, 50);
+            }
         })();
     </script>
 
