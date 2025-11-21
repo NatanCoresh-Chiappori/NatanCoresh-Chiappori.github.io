@@ -13,7 +13,7 @@ const allProjects = [
         image: null // null = placeholder, or use "images/project-name.jpg"
     },
     {
-        title: "Cognitive Attention Age using a large cloud dataset",
+        title: "Cognitive Attention and Aging using a large cloud dataset",
         description: "Using All of Us data (800,000+ participants), my thesis evaluates how smoking, alcohol use, and social satisfaction relate to sustained attention using regression, spline models, and risk-score methods. I also built a secure web app that computes a user's d′ and cognitive age locally with no data stored or transmitted.",
         link1: "https://example.com/paper",
         linkText1: "Link to paper (preprint)",

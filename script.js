@@ -128,7 +128,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Intersection Observer for fade-in animations
+// Intersection Observer for fade-in animations (reduced on mobile)
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -138,38 +138,61 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // On mobile, immediately show without animation
+            if (window.innerWidth <= 768) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'none';
+            }
         }
     });
 }, observerOptions);
 
-// Observe all sections and work items
-document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
-    el.classList.add('fade-in');
-    observer.observe(el);
-});
-
-// Animate skill bars when they come into view
-const skillBars = document.querySelectorAll('.skill-progress');
-const skillObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const progressBar = entry.target;
-            const width = progressBar.style.width;
-            progressBar.style.width = '0';
-            setTimeout(() => {
-                progressBar.style.width = width;
-            }, 100);
-            skillObserver.unobserve(progressBar);
-        }
+// Observe all sections and work items (skip fade-in on mobile)
+if (window.innerWidth > 768) {
+    document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
     });
-}, { threshold: 0.5 });
+} else {
+    // On mobile, just make everything visible immediately
+    document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+    });
+}
 
-skillBars.forEach(bar => {
-    skillObserver.observe(bar);
-});
+// Animate skill bars when they come into view (disabled on mobile)
+if (window.innerWidth > 768) {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBar = entry.target;
+                const width = progressBar.style.width;
+                progressBar.style.width = '0';
+                setTimeout(() => {
+                    progressBar.style.width = width;
+                }, 100);
+                skillObserver.unobserve(progressBar);
+            }
+        });
+    }, { threshold: 0.5 });
 
-// Parallax effect for hero section
+    skillBars.forEach(bar => {
+        skillObserver.observe(bar);
+    });
+} else {
+    // On mobile, show skill bars immediately at their final width
+    document.querySelectorAll('.skill-progress').forEach(bar => {
+        bar.style.transition = 'none';
+    });
+}
+
+// Parallax effect for hero section (disabled on mobile)
 window.addEventListener('scroll', () => {
+    // Disable parallax on mobile devices
+    if (window.innerWidth <= 768) return;
+    
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero-content');
     if (hero && scrolled < window.innerHeight) {
@@ -550,11 +573,18 @@ document.querySelectorAll('.work-item').forEach(item => {
     });
 });
 
-// Smooth reveal for work items with stagger effect
-const workItems = document.querySelectorAll('.work-item');
-workItems.forEach((item, index) => {
-    item.style.transitionDelay = `${index * 0.1}s`;
-});
+// Smooth reveal for work items with stagger effect (disabled on mobile)
+if (window.innerWidth > 768) {
+    const workItems = document.querySelectorAll('.work-item');
+    workItems.forEach((item, index) => {
+        item.style.transitionDelay = `${index * 0.1}s`;
+    });
+} else {
+    // On mobile, remove all delays
+    document.querySelectorAll('.work-item').forEach(item => {
+        item.style.transitionDelay = '0s';
+    });
+}
 
 // Add click effect to buttons
 document.querySelectorAll('.btn').forEach(btn => {
@@ -578,13 +608,18 @@ document.querySelectorAll('.btn').forEach(btn => {
     });
 });
 
-// Initialize on page load
+// Initialize on page load (reduced animation on mobile)
 window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
+    if (window.innerWidth <= 768) {
+        // On mobile, show immediately
         document.body.style.opacity = '1';
-    }, 100);
+    } else {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    }
 });
 
 

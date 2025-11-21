@@ -418,10 +418,13 @@
             }
         });
 
-        // Reactive Neuron Background
+        // Reactive Neuron Background (reduced on mobile)
         (function() {
             const canvas = document.getElementById('neuronCanvas');
             if (!canvas) return;
+            
+            // Reduce animation intensity on mobile
+            const isMobile = window.innerWidth <= 768;
             
             const ctx = canvas.getContext('2d');
             let mouseX = 0;
@@ -454,22 +457,28 @@
                 constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.vx = (Math.random() - 0.5) * 0.2;
-                    this.vy = (Math.random() - 0.5) * 0.2;
-                    this.size = 3; // Slightly larger
+                    // Much slower movement on mobile
+                    const speed = isMobile ? 0.05 : 0.2;
+                    this.vx = (Math.random() - 0.5) * speed;
+                    this.vy = (Math.random() - 0.5) * speed;
+                    this.size = isMobile ? 2 : 3; // Smaller on mobile
                     this.angle = Math.random() * Math.PI * 2; // For neuron-like extensions
                     this.hoverDistance = Infinity; // Track mouse hover distance
                 }
                 
                 update(nodes) {
-                    // Calculate distance to mouse for hover effect
-                    const dxToMouse = mouseX - this.x;
-                    const dyToMouse = mouseY - this.y;
-                    this.hoverDistance = Math.sqrt(dxToMouse * dxToMouse + dyToMouse * dyToMouse);
+                    // Disable hover effects on mobile
+                    if (!isMobile) {
+                        // Calculate distance to mouse for hover effect
+                        const dxToMouse = mouseX - this.x;
+                        const dyToMouse = mouseY - this.y;
+                        this.hoverDistance = Math.sqrt(dxToMouse * dxToMouse + dyToMouse * dyToMouse);
+                    }
                     
-                    // Gentle interaction with other nodes
+                    // Gentle interaction with other nodes (reduced on mobile)
                     let fx = 0;
                     let fy = 0;
+                    const interactionForce = isMobile ? 0.01 : 0.04;
                     
                     for (let other of nodes) {
                         if (other === this) continue;
@@ -481,36 +490,39 @@
                         if (distance > 0 && distance < 60) {
                             // Repulsion when too close
                             const force = (60 - distance) / 60;
-                            fx -= (dx / distance) * force * 0.04;
-                            fy -= (dy / distance) * force * 0.04;
+                            fx -= (dx / distance) * force * interactionForce;
+                            fy -= (dy / distance) * force * interactionForce;
                         }
                     }
                     
-                    // Hover effect - more reactive movement
-                    if (this.hoverDistance < 60) {
-                        // Strong repulsion when very close
-                        const force = (60 - this.hoverDistance) / 60;
-                        fx -= (dxToMouse / this.hoverDistance) * force * 0.25;
-                        fy -= (dyToMouse / this.hoverDistance) * force * 0.25;
-                    } else if (this.hoverDistance < 150) {
-                        // Moderate attraction at medium distance
-                        const force = (150 - this.hoverDistance) / 150;
-                        fx += (dxToMouse / this.hoverDistance) * force * 0.08;
-                        fy += (dyToMouse / this.hoverDistance) * force * 0.08;
-                    } else if (this.hoverDistance < 250) {
-                        // Gentle attraction at far distance
-                        const force = (250 - this.hoverDistance) / 250;
-                        fx += (dxToMouse / this.hoverDistance) * force * 0.03;
-                        fy += (dyToMouse / this.hoverDistance) * force * 0.03;
+                    // Hover effect - more reactive movement (disabled on mobile)
+                    if (!isMobile) {
+                        if (this.hoverDistance < 60) {
+                            // Strong repulsion when very close
+                            const force = (60 - this.hoverDistance) / 60;
+                            fx -= (dxToMouse / this.hoverDistance) * force * 0.25;
+                            fy -= (dyToMouse / this.hoverDistance) * force * 0.25;
+                        } else if (this.hoverDistance < 150) {
+                            // Moderate attraction at medium distance
+                            const force = (150 - this.hoverDistance) / 150;
+                            fx += (dxToMouse / this.hoverDistance) * force * 0.08;
+                            fy += (dyToMouse / this.hoverDistance) * force * 0.08;
+                        } else if (this.hoverDistance < 250) {
+                            // Gentle attraction at far distance
+                            const force = (250 - this.hoverDistance) / 250;
+                            fx += (dxToMouse / this.hoverDistance) * force * 0.03;
+                            fy += (dyToMouse / this.hoverDistance) * force * 0.03;
+                        }
                     }
                     
                     // Apply forces
                     this.vx += fx;
                     this.vy += fy;
                     
-                    // Apply velocity with less damping for more reactivity
-                    this.vx *= 0.97;
-                    this.vy *= 0.97;
+                    // Apply velocity with more damping on mobile for less movement
+                    const damping = isMobile ? 0.99 : 0.97;
+                    this.vx *= damping;
+                    this.vy *= damping;
                     
                     // Update position
                     this.x += this.vx;
@@ -555,8 +567,8 @@
                 }
             }
             
-            // Create neurons - dense network
-            const nodeCount = 120;
+            // Create neurons - dense network (fewer on mobile)
+            const nodeCount = isMobile ? 30 : 120; // Much fewer nodes on mobile
             const nodes = [];
             for (let i = 0; i < nodeCount; i++) {
                 nodes.push(new Node());
@@ -592,10 +604,12 @@
                         const dy = nodes[i].y - nodes[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        // Connect if nodes are within range (dense network)
-                        if (distance < 180) {
-                            // More visible lines
-                            const opacity = ((180 - distance) / 180) * 0.6;
+                        // Connect if nodes are within range (reduced on mobile)
+                        const connectionRange = isMobile ? 120 : 180;
+                        if (distance < connectionRange) {
+                            // Less visible lines on mobile
+                            const maxOpacity = isMobile ? 0.3 : 0.6;
+                            const opacity = ((connectionRange - distance) / connectionRange) * maxOpacity;
                             ctx.globalAlpha = opacity;
                             
                             // Draw straight line connection
@@ -616,11 +630,14 @@
         })();
     </script>
 
-    <!-- Magnetic Filaments for Blog Section -->
+    <!-- Magnetic Filaments for Blog Section (reduced on mobile) -->
     <script>
         (function() {
             const canvas = document.getElementById('blogCanvas');
             if (!canvas) return;
+            
+            // Reduce animation intensity on mobile
+            const isMobile = window.innerWidth <= 768;
             
             const ctx = canvas.getContext('2d');
             const blogSection = document.getElementById('blog');
@@ -683,20 +700,23 @@
                         this.y = Math.random() * canvas.height;
                     }
                     
-                    this.vx = (Math.random() - 0.5) * 1.5;
-                    this.vy = (Math.random() - 0.5) * 1.5;
-                    this.length = 20 + Math.random() * 40;
+                    // Much slower movement on mobile
+                    const speed = isMobile ? 0.3 : 1.5;
+                    this.vx = (Math.random() - 0.5) * speed;
+                    this.vy = (Math.random() - 0.5) * speed;
+                    this.length = isMobile ? 15 + Math.random() * 20 : 20 + Math.random() * 40;
                     this.segments = [];
-                    this.maxSegments = 20;
+                    this.maxSegments = isMobile ? 10 : 20;
                 }
                 
                 update(filaments, mouseStatic, mouseX, mouseY) {
-                    if (!isMouseInSection) {
-                        // Move randomly when mouse is not in section
+                    // Disable mouse interaction on mobile
+                    if (isMobile || !isMouseInSection) {
+                        // Move randomly when mouse is not in section or on mobile
                         this.x += this.vx;
                         this.y += this.vy;
                     } else {
-                        // Simple magnetic attraction to mouse
+                        // Simple magnetic attraction to mouse (desktop only)
                         const dx = mouseX - this.x;
                         const dy = mouseY - this.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -709,9 +729,10 @@
                         }
                     }
                     
-                    // Apply velocity with less damping for faster movement
-                    this.vx *= 0.97;
-                    this.vy *= 0.97;
+                    // Apply velocity with more damping on mobile for slower movement
+                    const damping = isMobile ? 0.99 : 0.97;
+                    this.vx *= damping;
+                    this.vy *= damping;
                     
                     // Update position
                     this.x += this.vx;
