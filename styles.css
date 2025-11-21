@@ -510,8 +510,8 @@ html.theme-flash::before {
 }
 
 .profile-image:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 32px rgba(0, 122, 255, 0.2);
+    transform: scale(1.05) !important;
+    box-shadow: 0 12px 32px rgba(0, 122, 255, 0.2) !important;
 }
 
 .hero-resume {
@@ -600,8 +600,8 @@ html.theme-flash::before {
     background: var(--bg-primary);
     color: var(--text-primary);
     border-color: var(--text-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
 }
 
 [data-theme="light"] .btn-primary:hover {
@@ -618,8 +618,8 @@ html.theme-flash::before {
     background: var(--bg-primary);
     color: var(--text-primary);
     border-color: var(--text-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
 }
 
 [data-theme="light"] .btn-secondary:hover {
@@ -857,8 +857,8 @@ section {
 .publication-card:hover {
     background: var(--bg-secondary);
     border-color: var(--accent);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15);
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15) !important;
 }
 
 .publication-year {
@@ -960,9 +960,9 @@ section {
 
 .work-item:hover,
 .work-item-link:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 60px var(--shadow);
-    border-color: var(--accent);
+    transform: translateY(-10px) !important;
+    box-shadow: 0 20px 60px var(--shadow) !important;
+    border-color: var(--accent) !important;
     text-decoration: none;
     color: inherit;
 }
@@ -995,7 +995,7 @@ section {
 }
 
 .work-item:hover .work-image img {
-    transform: scale(1.05);
+    transform: scale(1.05) !important;
 }
 
 .work-placeholder {
@@ -1524,10 +1524,10 @@ section {
 }
 
 .social-icon:hover {
-    transform: translateY(-4px) scale(1.1);
+    transform: translateY(-4px) scale(1.1) !important;
     background: var(--bg-secondary);
     border-color: var(--accent);
-    box-shadow: 0 8px 24px var(--shadow);
+    box-shadow: 0 8px 24px var(--shadow) !important;
     color: var(--accent);
 }
 
@@ -1934,23 +1934,66 @@ section {
         scroll-behavior: smooth !important;
     }
     
-    /* Remove any animation restrictions for desktop */
-    section *,
+    /* Remove any animation restrictions for desktop - explicitly restore normal values */
+    .work-item,
+    .work-item-link,
     .work-item *,
+    .publication-card,
     .publication-card *,
+    .btn,
     .btn *,
+    .nav-link,
     .nav-link *,
+    .social-icon,
     .social-icon *,
     .fade-in,
     .scroll-indicator,
     .mouse,
+    .mouse::before,
     .hero-subtitle,
+    .hero-subtitle::after,
     .mouth,
-    .skill-progress {
-        animation-duration: initial !important;
-        animation-iteration-count: initial !important;
-        transition-duration: initial !important;
-        transition-delay: initial !important;
+    .skill-progress,
+    .work-image img {
+        /* Remove animation restrictions - let browser use default/inherited values */
+        animation-duration: unset !important;
+        animation-iteration-count: unset !important;
+        transition-duration: unset !important;
+        transition-delay: unset !important;
+    }
+    
+    /* Explicitly set transitions for interactive elements */
+    .work-item,
+    .work-item-link {
+        transition: all 0.4s ease !important;
+    }
+    
+    .work-image img {
+        transition: transform 0.4s ease !important;
+    }
+    
+    .publication-card {
+        transition: all 0.3s ease !important;
+    }
+    
+    .btn {
+        transition: all 0.3s ease !important;
+    }
+    
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .profile-image {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    }
+    
+    .nav-link {
+        transition: all 0.2s ease-out !important;
+    }
+    
+    .work-link {
+        transition: all 0.25s ease !important;
     }
     
     /* Restore all hover animations on desktop */
