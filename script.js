@@ -264,6 +264,7 @@ const sectionNames = {
     'about': 'About',
     'work': 'Work',
     'blog': 'Blog',
+    'podcast': 'Podcast',
     'contact': 'Contact'
 };
 

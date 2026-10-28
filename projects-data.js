@@ -5,22 +5,30 @@
 
 const allProjects = [
     {
+        title: "Fulbright Research Grant at Charité – Universitätsmedizin Berlin:Designing Dignity – Rethinking AI for Aging Populations ",
+        description: "I was awarded a Fulbright Research Grant at Charité – Universitätsmedizin Berlin to study the effects of LLMs on older adults' cognition, independence, and well-being.",
+        link: "https://natancc.blog/2026/04/30/designing-dignity-rethinking-ai-for-aging-populations/",
+        linkText: "Link to Blog Entry about the project",
+        tags: ["Aging", "Cognition", "Mixed-Methods Research"],
+        image: "images/fulbright project.jpg"
+    },
+    {
+        title: "Cognitive Attention and Aging using a large cloud dataset",
+        description: "Using All of Us data (800,000+ participants), my thesis evaluates how smoking, alcohol use, and social satisfaction relate to sustained attention using regression, spline models, and risk-score methods. I also built a secure web app that computes a user's d′ and cognitive age locally with no data stored or transmitted.",
+        link1: "https://www.medrxiv.org/content/10.64898/2026.10.01.26364102v2",
+        linkText1: "Link to paper (preprint)",
+        link2: "https://cognitive-attention-age-using-a-large.onrender.com/",
+        linkText2: "Link to web app",
+        tags: ["Aging", "Cognition", "Data Analysis", "Python", "Machine Learning"],
+        image: "images/project2.jpg"
+    },
+    {
         title: "Human-AI Intimacy Research Grant",
         description: "I was awarded a grant to characterize the prevalence, motivations, boundaries, and usage patterns of human-AI intimacy; and examine psychosocial, behavioral, and regional correlates associated with such use.",
         // link: "#",
         // linkText: "Link to Paper (preprint)",
         tags: ["Human Study Design", "Python", "Mixed-Methods Research"],
-        image: null // null = placeholder, or use "images/project-name.jpg"
-    },
-    {
-        title: "Cognitive Attention and Aging using a large cloud dataset",
-        description: "Using All of Us data (800,000+ participants), my thesis evaluates how smoking, alcohol use, and social satisfaction relate to sustained attention using regression, spline models, and risk-score methods. I also built a secure web app that computes a user's d′ and cognitive age locally with no data stored or transmitted.",
-        // link1: "https://example.com/paper",
-        // linkText1: "Link to paper (preprint)",
-        link2: "https://cognitive-attention-age-using-a-large.onrender.com/",
-        linkText2: "Link to web app",
-        tags: ["UI/UX", "Machine Learning", "Data Analysis"],
-        image: null
+        image: "images/project1.jpg"
     },
     {
         title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
@@ -28,7 +36,7 @@ const allProjects = [
         // link: "#",
         // linkText: "Link",
         tags: ["Human Study Design", "Project Management"],
-        image: null
+        image: "images/project3.jpg"
     },
     {
         title: "Problem Children? When Embeddings Misbehave",
@@ -36,7 +44,7 @@ const allProjects = [
         link: "https://docs.google.com/presentation/d/1iWAs6DJMn8mY4hCjhmA5dZwBBBAqyDy4Z0o9BwZzVf0/edit?usp=sharing",
         linkText: "View Presentation",
         tags: ["Machine Learning", "Neuroscience", "Python", "Research"],
-        image: null
+        image: "images/project4.jpg"
     },
     {
         title: "The Current State of Stem Cell Therapies for Neurological Disorders: A Meta-Analysis of Cell Types, Risks, and Translational Outcomes",
@@ -44,7 +52,7 @@ const allProjects = [
         // link: "#",
         // linkText: "Link",
         tags: ["Scientific Writing", "Meta-Analysis"],
-        image: null
+        image: "images/project5.jpg"
     },
     // Add more projects here - they'll appear on projects.html but not on the home page
     // Example with single link:
@@ -71,15 +79,13 @@ const allProjects = [
 
 // Function to render a project item
 function renderProject(project, index) {
-    // Auto-generate image path: project1.jpg, project2.jpg, etc.
-    // If project.image is explicitly set, use that; otherwise try project{index+1}.jpg
-    let imagePath = project.image;
-    if (!imagePath) {
-        imagePath = `images/project${index + 1}.jpg`;
-    }
-    
-    // Check if image exists (will show placeholder if image fails to load)
-    const imageHTML = `<img src="${imagePath}" alt="${project.title}" onerror="this.parentElement.innerHTML='<div class=\\'work-placeholder\\'><span>Project Image</span></div>'">`;
+    const imagePath = project.image;
+
+    // If an image isn't explicitly assigned, show a placeholder instead of falling back
+    // to a numbered filename based on array order.
+    const imageHTML = imagePath
+        ? `<img src="${imagePath}" alt="${project.title}" onerror="this.parentElement.innerHTML='<div class=\\'work-placeholder\\'><span>Project Image</span></div>'">`
+        : `<div class="work-placeholder"><span>Project Image</span></div>`;
     
     const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
     
