@@ -9,7 +9,7 @@ const allProjects = [
         description: "I was awarded a Fulbright Research Grant at Charité – Universitätsmedizin Berlin to study the effects of LLMs on older adults' cognition, independence, and well-being.",
         link: "https://natancc.blog/2026/04/30/designing-dignity-rethinking-ai-for-aging-populations/",
         linkText: "Link to Blog Entry about the project",
-        tags: ["Aging", "Cognition", "Mixed-Methods Research"],
+        tags: ["Aging", "Cognition", "Decision-Making","Mixed-Methods Research"],
         image: "images/fulbright project.jpg"
     },
     {
@@ -24,7 +24,7 @@ const allProjects = [
     },
     {
         title: "Human-AI Intimacy Research Grant",
-        description: "I was awarded a grant to characterize the prevalence, motivations, boundaries, and usage patterns of human-AI intimacy; and examine psychosocial, behavioral, and regional correlates associated with such use.",
+        description: "I was awarded a grant to characterize the prevalence, motivations, boundaries, and usage patterns of human-AI intimacy; and examine psychosocial, behavioral, and regional correlates associated with such use. Pre-print manuscript in progress.",
         // link: "#",
         // linkText: "Link to Paper (preprint)",
         tags: ["Human Study Design", "Python", "Mixed-Methods Research"],
